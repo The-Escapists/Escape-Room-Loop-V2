@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Rewired_Bolt_Runtime</name>
+    </assembly>
+    <members>
+        <member name="P:Rewired.Integration.Bolt.Units.StaticEventUnitBase`1.output">
+            <summary>
+            The event data.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.InstanceEventUnitBase`2.output">
+            <summary>
+            The event data.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.InputMapperEventUnitBase`1.input_inputMapper">
+            <summary>
+            The target Input Mapper object.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.PlayerEventUnitBase`1.input_player">
+            <summary>
+            The target Player object.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.InputMapper_InputMappedEvent">
+            <summary>
+            Event that is triggered when an input assignment is made.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.InputMapper_ErrorEvent">
+            <summary>
+            Event that is triggered an error occurs.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.InputMapper_CanceledEvent">
+            <summary>
+            Event that is triggered when listening is canceled.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.InputMapper_TimedOutEvent">
+            <summary>
+            Event that is triggered when listening times out.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.InputMapper_StartedEvent">
+            <summary>
+            Event that is triggered when listening is started.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.InputMapper_StoppedEvent">
+            <summary>
+            Event that is triggered when listening stops.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.InputMapper_ConflictFoundEvent">
+            <summary>
+            Event that is triggered when an assignment conflict is found.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_ControllerConnectedEvent">
+            <summary>
+            Event triggered when a controller is conected.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_ControllerPreDisconnectEvent">
+            <summary>
+            Event triggered just before a controller is disconnected. You can use this event to save controller maps before the controller is removed.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_ControllerDisconnectedEvent">
+            <summary>
+            Event triggered after a controller is disconnected.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_InputSourceUpdateEvent">
+            <summary>
+            Event triggered before all input sources are updated. Use this event to update the element values Custom Controllers.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_EditorRecompileEvent">
+            <summary>
+            Event triggered when editor begins recompiling scripts.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_PreShutDownEvent">
+            <summary>
+            Event triggered immediately before Rewired shuts down. Rewired objects are still valid during this event.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_ShutDownEvent">
+            <summary>
+            Event triggered after Rewired shuts down.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.Player_ControllerAddedEvent">
+            <summary>
+            Event triggered when a controller is assigned to this Player.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.Player_ControllerRemovedEvent">
+            <summary>
+            Event triggered when a controller is removed from this Player.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.ReInput_ControllerHelper_LastActiveControllerChangedEvent_Unified">
+            <summary>
+            Event that is triggered every time the last active controller changes.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.ReInput_ControllerHelper_LastActiveControllerChangedEvent_Unified.param_controllerType">
+            <summary>
+            The controller type for which to listen for changes.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.ReInput_ControllerHelper_LastActiveControllerChangedEvent_Unified.option_useControllerType">
+            <summary>
+            If enabled, events will be returned only when the last active controller type of the specified type changes.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified">
+            <summary>
+            Event that is triggered every time an input event occurs matching the specified parameters.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.input_player">
+            <summary>
+            The target Player object.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.param_updateLoopType">
+            <summary>
+            The update loop in which to monitor changes.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.param_action">
+            <summary>
+            The action for which to receive change events.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.param_arguments_speed">
+            <summary>
+            The speed. This is only used for certain event types.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.param_arguments_time">
+            <summary>
+            The time in seconds. This is only used for certain event types.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.param_arguments_expireIn">
+            <summary>
+            The time to expire in. This is only used for certain event types.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.option_usePlayerId">
+            <summary>
+            If enabled, you can use the Player Id directly. Otherwise, a Player object must be linked to the Player input port.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.option_useActionId">
+            <summary>
+            If enabled, you can set the Action Id to be used to look up the Action. Otherwise, the Action Name will be used.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_InputEvent_Unified.param_eventType">
+            <summary>
+            The event type for which to send an event.
+            </summary>
+        </member>
+        <member name="T:Rewired.Integration.Bolt.Units.Player_PlayerHelper_LastActiveControllerChangedEvent_Unified">
+            <summary>
+            Event that is triggered every time the Player's last active controller changes.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_PlayerHelper_LastActiveControllerChangedEvent_Unified.input_player">
+            <summary>
+            The target Player object.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_PlayerHelper_LastActiveControllerChangedEvent_Unified.param_controllerType">
+            <summary>
+            The controller type for which to listen for changes.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_PlayerHelper_LastActiveControllerChangedEvent_Unified.output_player">
+            <summary>
+            The Player whose last active controller changed.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_PlayerHelper_LastActiveControllerChangedEvent_Unified.output_controller">
+            <summary>
+            The last active controller.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_PlayerHelper_LastActiveControllerChangedEvent_Unified.option_usePlayerId">
+            <summary>
+            If enabled, you can use the Player Id directly. Otherwise, a Player object must be linked to the Player input port.
+            </summary>
+        </member>
+        <member name="P:Rewired.Integration.Bolt.Units.Player_PlayerHelper_LastActiveControllerChangedEvent_Unified.option_useControllerType">
+            <summary>
+            If enabled, events will be returned only when the last active controller type of the specified type changes.
+            </summary>
+        </member>
+    </members>
+</doc>
