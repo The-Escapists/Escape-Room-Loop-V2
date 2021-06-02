@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8173901299321256711}
   - component: {fileID: 1691004731364441324}
   m_Layer: 6
-  m_Name: Door
+  m_Name: Door-vertical
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56,7 +56,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1161233601525247877}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -67,7 +67,7 @@ Transform:
   - {fileID: 2923132708782115766}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!212 &1161233601525247875
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -131,12 +131,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4714c45a9d436d4fb4bfc830116a802, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionIndex: 0
-  spriteCollection:
-    spriteStateRenderer: {fileID: 0}
-    spriteStateClosed: {fileID: 0}
-    spriteStateOpen: {fileID: 0}
-  condition: 0
+  sprites:
+  - doorRenderer: {fileID: 1161233601525247875}
+    doorClosed: {fileID: 21300000, guid: 0b6316c251a2af54ea0abbabbab6661e, type: 3}
+    doorOpen: {fileID: 21300000, guid: e458031203e51104f81b4e694f98e7b3, type: 3}
+  - doorRenderer: {fileID: 6454429312371513793}
+    doorClosed: {fileID: 21300000, guid: 6931c22702190e449981fd19e9411d0a, type: 3}
+    doorOpen: {fileID: 21300000, guid: de6f502a68cb54e49a84805864fcf6ea, type: 3}
+  colliders:
+  - {fileID: 4340584001337498641}
+  source: {fileID: 1691004731364441324}
+  spawnpoint: {fileID: 1161233601525247877, guid: 56c67691f9adccc4abe0c4e0e50df051, type: 3}
+  spawnpointHolder: {fileID: 7599041388263372618}
+  conditions:
+  - conditionValue: 0
+    conditionReference: 1
 --- !u!82 &1691004731364441324
 AudioSource:
   m_ObjectHideFlags: 0
@@ -630,6 +639,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2923132708782115766}
   - component: {fileID: 1908209322917817692}
+  - component: {fileID: 1968306891169727}
   m_Layer: 0
   m_Name: CameraRoomSwitchTrigger
   m_TagString: Untagged
@@ -677,3 +687,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.5}
   m_EdgeRadius: 0
+--- !u!114 &1968306891169727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7313204621502660193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f2633767fe6a14fa947bf2cbe35a70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Room1: {x: 0, y: 0, z: 0}
+  Room2: {x: 0, y: 0, z: 0}
