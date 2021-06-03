@@ -169,11 +169,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717801ea9f6b00a4993afc3d844b15a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lights:
-  - {fileID: 3858169228750681213}
+  actionIndex: 0
+  light2D: {fileID: 0}
   onValue: 1
   offValue: 1
-  conditions: []
+  condition: 0
 --- !u!61 &157594346009163930
 BoxCollider2D:
   m_ObjectHideFlags: 0
