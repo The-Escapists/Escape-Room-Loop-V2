@@ -13,13 +13,6 @@ namespace TheEscapists.Entities
         public int CurrentPositionIndex = 0;
         public int CurrentInteractionIndex = 0;
 
-        private MovementManager movementManager;
-
-        void Awake()
-        {
-            movementManager = this.GetComponent<MovementManager>();
-        }
-
         public void MoveToNextPosition()
         {
             if (CurrentPositionIndex >= Positions.Count)
@@ -40,7 +33,7 @@ namespace TheEscapists.Entities
             CurrentPositionIndex++;
             //Debug.Log(direction);
 
-            movementManager.Move(direction);
+            Move(direction);
         }
 
         public void PerformInteraction()

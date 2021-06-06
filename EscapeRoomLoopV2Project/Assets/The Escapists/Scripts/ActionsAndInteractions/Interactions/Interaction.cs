@@ -16,7 +16,7 @@ namespace TheEscapists.ActionsAndInteractions.Interaction
         [EnumToggleButtons, HideLabel]
         public InteractionContexts interactionContext;
         [BoxGroup("Interaction")]
-        public enum Interactions {Move, Switch, Trigger, Spawnpoint};
+        public enum Interactions {Move, Switch, Trigger};
         [EnumToggleButtons, HideLabel, PropertySpace(SpaceAfter = 5)]
         public Interactions interaction;
 
@@ -95,14 +95,6 @@ namespace TheEscapists.ActionsAndInteractions.Interaction
                     if (interaction == Interactions.Trigger && executers == 1)
                     {
                         ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, true);
-                    }
-                    else if (interaction == Interactions.Spawnpoint)
-                    {
-                        Player p = (Player)eBase;
-                        if (p)
-                        {
-                            p.SetNewSpawn(transform);
-                        }
                     }
                 }
             }

@@ -20,8 +20,6 @@ namespace TheEscapists.Core.Manager
         public UnityEvent StepResetEvent = new UnityEvent();
         public UnityEvent StepCounterDecreasedEvent = new UnityEvent();
 
-        private PlayerInput playerInput;
-
         void Awake()
         {
             if (Instance == null)
@@ -37,11 +35,6 @@ namespace TheEscapists.Core.Manager
             CurrentActionsCount = StartActionsCount;
             StepCounterText.text = CurrentActionsCount.ToString();
             TurnCounterText.text = CurrentTurnCount.ToString();
-        }
-
-        private void Start()
-        {
-            playerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>();
         }
 
         public bool DecreaseActions()
@@ -69,12 +62,12 @@ namespace TheEscapists.Core.Manager
             CurrentActionsCount = StartActionsCount;
             StepCounterText.text = CurrentActionsCount.ToString();
             StepResetEvent.Invoke();
-            playerInput.blockInput = false;
+            //playerInput.blockInput = false;
         }
 
         private IEnumerator DelayTimeReset()
         {
-            playerInput.blockInput = true;
+            //playerInput.blockInput = true;
             yield return new WaitForSeconds(ResetDelay);
             CurrentTurnCount++;
             TurnCounterText.text = CurrentTurnCount.ToString();

@@ -2,71 +2,61 @@ using TheEscapists.Core.Manager;
 using TheEscapists.Entities;
 using TheEscapists.Entities.Manager;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace TheEscapists
 {
     public class PlayerInput : MonoBehaviour
     {
-        public MovementManager Movement;
-        EntityBase eBase;
-
+        public UnityEvent<InputCommand> InputEvent = new UnityEvent<InputCommand>();
+        
         [HideInInspector]
-        public bool blockInput;
+        public static PlayerInput Instance;
 
-        void Start()
+        private void Start()
         {
-            eBase = GetComponent<EntityBase>();
+            if (Instance == null)
+            {
+                Instance = this;
+            }
+            else if (Instance != null)
+            {
+                Destroy(gameObject);
+            }
         }
 
         void Update()
         {
-            if (blockInput)
-                return;
-
             if (Input.GetKeyDown(KeyCode.W))
             {
-                if (Movement.Move(Vector2.up))
-                    ActionsManager.Instance.DecreaseActions();
+                InputEvent.Invoke(InputCommand.UP);
             }
             if (Input.GetKeyDown(KeyCode.A))
             {
-                if (Movement.Move(Vector2.left))
-                    ActionsManager.Instance.DecreaseActions();
+                InputEvent.Invoke(InputCommand.LEFT);
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                if (Movement.Move(Vector2.down))
-                    ActionsManager.Instance.DecreaseActions();
+                InputEvent.Invoke(InputCommand.DOWN);
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                if (Movement.Move(Vector2.right))
-                    ActionsManager.Instance.DecreaseActions();
+                InputEvent.Invoke(InputCommand.RIGHT);
             }
-            if (Input.GetKeyDown(KeyCode.LeftShift) && eBase.interactionContext != null && !eBase.isMovingObject)
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
-                if (ActionsManager.Instance.DecreaseActions())
-                {
-                    eBase.interactionContext.Execute(transform, eBase);
-                    ShadowManager.Instance.SetLastInteractionTrue();
-                }
-            }
-            if (Input.GetKeyUp(KeyCode.LeftShift) && eBase.interactionContext != null && eBase.interactionContext.parrented)
-            {
-                if (ActionsManager.Instance.DecreaseActions())
-                {
-                    eBase.interactionContext.Execute(transform, eBase);
-                    ShadowManager.Instance.SetLastInteractionTrue();
-                }
+                InputEvent.Invoke(InputCommand.INTERACT);
             }
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                ActionsManager.Instance.DecreaseActions();
+                InputEvent.Invoke(InputCommand.SKIPSTEP);
             }
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                ActionsManager.Instance.TimeReset();
-            }
+        }
+
+        public enum InputCommand
+        {
+            UP, LEFT, DOWN, RIGHT,
+            SKIPSTEP, INTERACT
         }
     }
 }

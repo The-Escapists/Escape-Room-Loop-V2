@@ -4,37 +4,50 @@ using UnityEngine;
 
 namespace TheEscapists.Entities
 {
+    [RequireComponent(typeof(PlayerInput))]
     public class Player : EntityBase
     {
-        public Transform Spawn;
+        private Vector3 spawn;
+
+        private PlayerInput playerInput;
 
         void Start()
         {
-            SetSpawn();
-            ActionsManager.Instance.StepResetEvent.AddListener(ResetPlayerToCurrentSpawn);
+            spawn = this.transform.position;
+            playerInput = this.GetComponent<PlayerInput>();
+            playerInput.InputEvent.AddListener(Interact);
         }
 
-        public void SetNewSpawn(Transform newSpawn)
-        {
-            Spawn = newSpawn;
-        }
-
-        public void ResetPlayerToCurrentSpawn()
+        public void ResetPlayer()
         {
             this.isMovingObject = false;
             this.interactionContext = null;
-            SetSpawn();
-            ShadowManager.Instance.CreateNewShadow(Spawn.position);
+            this.transform.position = spawn;
         }
 
-        private void SetSpawn()
+        public void Interact(PlayerInput.InputCommand command)
         {
-            if (!Spawn)
+            switch (command)
             {
-                Debug.LogError("Player -> Spawn missing!");
-                return;
+                case PlayerInput.InputCommand.UP:
+                    Move(new Vector3(0, 1));
+                    break;
+                case PlayerInput.InputCommand.LEFT:
+                    Move(new Vector3(-1, 0));
+                    break;
+                case PlayerInput.InputCommand.DOWN:
+                    Move(new Vector3(0, -1));
+                    break;
+                case PlayerInput.InputCommand.RIGHT:
+                    Move(new Vector3(1, 0));
+                    break;
+                case PlayerInput.InputCommand.SKIPSTEP:
+                    break;
+                case PlayerInput.InputCommand.INTERACT:
+                    break;
+                default:
+                    break;
             }
-            this.transform.position = new Vector3(Spawn.position.x, Spawn.position.y, this.transform.position.z);
         }
     }
 }
