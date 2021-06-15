@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffecbf807d3f7ef49936b09dba9e1dd7, type: 3}
+  m_Name: Ground
+  m_EditorClassIdentifier: 
+  prefabName: Ground
+  frameColor: {r: 0, g: 0, b: 0, a: 0}
+  prefab: {fileID: 1161233601525247877, guid: eca7af4c6a54b044d86787dbe8f57d85, type: 3}
+  icon: {fileID: 21300000, guid: 7180e294342384e488d71500eec3ec29, type: 3}
+  index: 0

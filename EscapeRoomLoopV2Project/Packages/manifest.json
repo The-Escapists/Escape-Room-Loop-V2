@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.github.siccity.xnode": "file:C:/GithubFork/xNode-1.8.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.spriteshape": "5.1.2",
     "com.unity.burst": "1.4.8",

@@ -13,7 +13,7 @@ namespace TheEscapists.ActionsAndInteractions.Actions
         public override void CheckConditions()
         {
 
-            condition = ActionAndInteractionManager.instance.GetActorState(actionIndex);
+            //condition = ActionAndInteractionManager.instance.GetActorState(actionIndex);
 
             spriteCollection.spriteStateRenderer.sprite = condition ? spriteCollection.spriteStateOpen : spriteCollection.spriteStateClosed;
         }

@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.github.siccity.xnode": {
+      "version": "file:C:/GithubFork/xNode-1.8.0",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.2d.common": {
       "version": "4.0.3",
       "depth": 1,

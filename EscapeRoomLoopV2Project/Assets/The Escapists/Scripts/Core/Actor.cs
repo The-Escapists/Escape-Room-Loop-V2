@@ -3,37 +3,41 @@ using UnityEngine;
 
 namespace TheEscapists.Core
 {
+
     [Serializable]
-    public struct Actor
+    public class BaseTile
     {
         public string name;
-        public bool state;
-        public Vector2 position;
         public int id;
+        public Vector2Int position;
 
-        public Actor(string _name, bool _state, Vector2 _position, int _id)
+        public BaseTile(string _name, Vector2Int _position, int _id)
         {
             name = _name;
-            state = _state;
             position = _position;
             id = _id;
         }
     }
 
     [Serializable]
-    public struct Interactor
+    public class ActorTile : BaseTile
     {
-        public string name;
         public bool state;
-        public Vector2 position;
-        public int id;
 
-        public Interactor(string _name, bool _state, Vector2 _position, int _id)
+        public ActorTile(string _name, Vector2Int _position, int _id, bool _state) : base(_name, _position, _id)
         {
-            name = _name;
             state = _state;
-            position = _position;
-            id = _id;
+        }
+    }
+
+    [Serializable]
+    public class InteractorTile : BaseTile
+    {
+        public bool state;
+
+        public InteractorTile(string _name, Vector2Int _position, int _id, bool _state) : base(_name, _position, _id)
+        {
+            state = _state;
         }
     }
 }

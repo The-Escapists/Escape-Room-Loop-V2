@@ -8,7 +8,7 @@ namespace TheEscapists.ActionsAndInteractions.Actions
         public int actionIndex = 0;
         private void Start()
         {
-            ActionAndInteractionManager.instance.updateActions.AddListener(CheckConditions);
+            //ActionAndInteractionManager.instance.updateActions.AddListener(CheckConditions);
         }
         public abstract void CheckConditions();
     }

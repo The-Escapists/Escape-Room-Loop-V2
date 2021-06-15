@@ -64,7 +64,7 @@ namespace TheEscapists.ActionsAndInteractions.Interaction
             transform.position = rootPosition;
             executers = 0;
             isInteractable = true;
-            ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, false);
+            //ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, false);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -89,12 +89,12 @@ namespace TheEscapists.ActionsAndInteractions.Interaction
                     if (interaction == Interactions.Switch && executers == 1)
                     {
                         switchState = true;
-                        ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, switchState);
+                        //ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, switchState);
                     }
 
                     if (interaction == Interactions.Trigger && executers == 1)
                     {
-                        ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, true);
+                        //ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, true);
                     }
                 }
             }
@@ -125,14 +125,14 @@ namespace TheEscapists.ActionsAndInteractions.Interaction
                     if (interaction == Interactions.Switch && executers == 0)
                     {
                         switchState = false;
-                        ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, switchState);
+                        //ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, switchState);
                     }
                 }
 
                 if (interaction == Interactions.Trigger && executers == 0)
                 {
                     switchState = false;
-                    ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, false);
+                    //ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, false);
                 }
             }
         }
@@ -165,10 +165,10 @@ namespace TheEscapists.ActionsAndInteractions.Interaction
                         break;
                     case Interactions.Switch:
                         switchState = !switchState;
-                        ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, switchState);
+                        //ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, switchState);
                         break;
                     case Interactions.Trigger:
-                        ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, true);
+                        //ActionAndInteractionManager.instance.SetInteractionState(interactionIndex, true);
                         break;
                     default:
                         break;
