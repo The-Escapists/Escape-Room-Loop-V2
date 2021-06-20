@@ -92,7 +92,13 @@ public class MapData
             {
                 for (int y = 0; y < mapSize.y; y++)
                 {
-                    data[x, y] = new MapTileData(mapDescription.tileName[x * mapSize.y + y * mapDescription.layerCount + z], mapDescription.tileRotation[x * mapSize.y + y * mapDescription.layerCount + z], mapDescription.brushPrefabName[x * mapSize.y + y * mapDescription.layerCount + z], mapDescription.interactionSystemDescriptions[x * mapSize.y + y * mapDescription.layerCount + z],  mapDescription.notifyTypes[x * mapSize.y + y * mapDescription.layerCount + z]);
+                    data[x, y] = new MapTileData(
+                        mapDescription.tileName[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x],
+                        mapDescription.tileRotation[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x],
+                        mapDescription.brushPrefabName[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x],
+                        (InteractionSystemDescription)mapDescription.interactionSystemDescriptions[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x],
+                        (NotifyType)mapDescription.notifyTypes[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x]
+                        );
                 }
             }
 

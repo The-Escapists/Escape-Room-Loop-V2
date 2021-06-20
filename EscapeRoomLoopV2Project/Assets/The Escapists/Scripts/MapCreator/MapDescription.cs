@@ -6,11 +6,11 @@ using UnityEditor;
 #endif
 using UnityEngine;
 
-public class MapDescription : ScriptableObject
-{
+public class MapDescription : SerializedScriptableObject
+{ 
 #if UNITY_EDITOR
     [Button]
-    public void CreateInteractionGraph()
+    public void CreateInteractionGraph(MapDescription mapDescription)
     {
         if (interactionGraph) return;
 
@@ -18,17 +18,17 @@ public class MapDescription : ScriptableObject
             Directory.CreateDirectory(Application.dataPath + "/The Escapists/Resources/Interaction Graphs/");
         interactionGraph = CreateInstance<MapInteractionNodeGraph>();
         interactionGraph.name = mapName + "Graph";
+        interactionGraph.mapDescription = mapDescription;
         AssetDatabase.CreateAsset(interactionGraph, "Assets/The Escapists/Resources/Interaction Graphs/" + mapName + "Graph.asset");
         AssetDatabase.SaveAssets();
-
-        interactionGraph.mapDescription = this;
     }
 #endif
+    
     public string mapName;
     public Vector2Int mapSize;
     public int layerCount;
     public MapInteractionNodeGraph interactionGraph;
-
+    
     public int[] layerIndex;
     public string[] layerName;
     public bool[] isHidden;
@@ -36,8 +36,8 @@ public class MapDescription : ScriptableObject
     public string[] tileName;
     public int[] tileRotation;
     public string[] brushPrefabName;
-    public InteractionSystemDescription[] interactionSystemDescriptions;
-    public NotifyType[] notifyTypes;
+    public int[] interactionSystemDescriptions;
+    public int[] notifyTypes;
 
     public void Init(MapData map)
     {
@@ -51,24 +51,24 @@ public class MapDescription : ScriptableObject
         tileName = new string[mapSize.x * mapSize.y * layerCount];
         tileRotation = new int[mapSize.x * mapSize.y * layerCount];
         brushPrefabName = new string[mapSize.x * mapSize.y * layerCount];
-        interactionSystemDescriptions = new InteractionSystemDescription[mapSize.x * mapSize.y * layerCount];
-        notifyTypes = new NotifyType[mapSize.x * mapSize.y * layerCount];
+        interactionSystemDescriptions = new int[mapSize.x * mapSize.y * layerCount];
+        notifyTypes = new int[mapSize.x * mapSize.y * layerCount];
 
-        for (int i = 0; i < layerCount; i++)
+        for (int z = 0; z < layerCount; z++)
         {
-            layerIndex[i] = map.mapLayers[i].layerIndex;
-            layerName[i] = map.mapLayers[i].layerName;
-            isHidden[i] = map.mapLayers[i].isHidden;
+            layerIndex[z] = map.mapLayers[z].layerIndex;
+            layerName[z] = map.mapLayers[z].layerName;
+            isHidden[z] = map.mapLayers[z].isHidden;
 
             for (int x = 0; x < mapSize.x; x++)
             {
                 for (int y = 0; y < mapSize.y; y++)
                 {
-                    tileName[x * mapSize.y + y * layerCount + i] = map.mapLayers[i].layerTiles[x, y].tileName;
-                    tileRotation[x * mapSize.y + y * layerCount + i] = map.mapLayers[i].layerTiles[x, y].tileRotation;
-                    brushPrefabName[x * mapSize.y + y * layerCount + i] = map.mapLayers[i].layerTiles[x, y].brushPrefabName;
-                    interactionSystemDescriptions[x * mapSize.y + y * layerCount + i] = map.mapLayers[i].layerTiles[x, y].interactionSystemDescription;
-                    notifyTypes[x * mapSize.y + y * layerCount + i] = map.mapLayers[i].layerTiles[x, y].notifyType;
+                    tileName[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x] = map.mapLayers[z].layerTiles[x, y].tileName;
+                    tileRotation[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x] = map.mapLayers[z].layerTiles[x, y].tileRotation;
+                    brushPrefabName[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x] = map.mapLayers[z].layerTiles[x, y].brushPrefabName;
+                    interactionSystemDescriptions[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x] = (int)map.mapLayers[z].layerTiles[x, y].interactionSystemDescription;
+                    notifyTypes[(z * mapSize.x * mapSize.y) + (y * mapSize.x) + x] = (int)map.mapLayers[z].layerTiles[x, y].notifyType;
                 }
             }
         }

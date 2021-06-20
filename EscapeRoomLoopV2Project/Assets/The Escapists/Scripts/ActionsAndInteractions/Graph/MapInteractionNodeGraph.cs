@@ -82,7 +82,7 @@ public class MapInteractionNodeGraph : NodeGraph
         if (mapDescription == null)
             return;
 
-        mapDescription.interactionGraph = this;
+        //mapDescription.interactionGraph = this;
 
         NodeEditorWindow window = NodeEditorWindow.current;
 
@@ -123,15 +123,15 @@ public class MapInteractionNodeGraph : NodeGraph
             if (skip)
                 continue;
 
-            if (mapDescription.interactionSystemDescriptions[i] == InteractionSystemDescription.Interactor)
+            if ((InteractionSystemDescription)mapDescription.interactionSystemDescriptions[i] == InteractionSystemDescription.Interactor)
             {
                 InputNode inputNode = window.graphEditor.CreateNode(typeof(InputNode), new Vector2(-400, 0 + 40 * createdInputNodes)) as InputNode;
-                inputNode.allowedNotifyType = mapDescription.notifyTypes[i];
+                inputNode.allowedNotifyType = (NotifyType)mapDescription.notifyTypes[i];
                 inputNode.name = mapDescription.tileName[i];
                 createdInputNodes++;
             }
 
-            if (mapDescription.interactionSystemDescriptions[i] == InteractionSystemDescription.Actor)
+            if ((InteractionSystemDescription)mapDescription.interactionSystemDescriptions[i] == InteractionSystemDescription.Actor)
             {
                 OutputNode outputNode = window.graphEditor.CreateNode(typeof(OutputNode), new Vector2(400, 0 + 40 * createdOutputNodes)) as OutputNode;
                 outputNode.name = mapDescription.tileName[i];

@@ -26,7 +26,7 @@ public class MapCreatorTile : MonoBehaviour
     {
         // if(transform.childCount > 0)
         //Destroy(transform.GetChild(0).gameObject);
-        icon.sprite = null;
+        icon.sprite = MapCreator.instance.selectionFrameSprite;
         string prefabName = MapCreator.instance.currentMapData.mapLayers[position.z].layerTiles[position.x, position.y].brushPrefabName;
         int rotation = MapCreator.instance.currentMapData.mapLayers[position.z].layerTiles[position.x, position.y].tileRotation;
         if (prefabName != "")

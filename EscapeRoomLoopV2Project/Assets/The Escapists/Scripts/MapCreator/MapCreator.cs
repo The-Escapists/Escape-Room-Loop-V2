@@ -19,6 +19,7 @@ public class MapCreator : MonoBehaviour
     TMP_InputField mapNameInputField;
     public GameObject tilePrefab;
     public GameObject selectableTilePrefab;
+    public Sprite selectionFrameSprite;
     public LayerMask layerMask;
     public string brushPrefabName;
     public int[] avalableBrushRotations = new int[] { 0, 90, 180, -90 };
@@ -186,7 +187,9 @@ public class MapCreator : MonoBehaviour
         }
 
         mapDescription.Init(currentMapData);
-        mapDescription.CreateInteractionGraph();
+        mapDescription.CreateInteractionGraph(mapDescription);
+
+        EditorUtility.SetDirty(mapDescription);
 
         availableMaps.Clear();
         availableMaps.AddRange(Resources.LoadAll<MapDescription>("Map Descriptions"));
