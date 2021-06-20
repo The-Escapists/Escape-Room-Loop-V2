@@ -8,14 +8,14 @@ namespace TheEscapists.ActionsAndInteractions.Actions
     {
         public SpriteCollection spriteCollection;
 
-        public bool condition;
-
-        public override void CheckConditions()
+        public override void TriggerDisable()
         {
+            spriteCollection.spriteStateRenderer.sprite = spriteCollection.spriteStateOff;
+        }
 
-            //condition = ActionAndInteractionManager.instance.GetActorState(actionIndex);
-
-            spriteCollection.spriteStateRenderer.sprite = condition ? spriteCollection.spriteStateOpen : spriteCollection.spriteStateClosed;
+        public override void TriggerEnable()
+        {
+            spriteCollection.spriteStateRenderer.sprite = spriteCollection.spriteStateOn;
         }
     }
 
@@ -25,8 +25,8 @@ namespace TheEscapists.ActionsAndInteractions.Actions
         [PreviewField(50, ObjectFieldAlignment.Center)]
         public SpriteRenderer spriteStateRenderer;
         [PreviewField(50, ObjectFieldAlignment.Center)]
-        public Sprite spriteStateClosed;
+        public Sprite spriteStateOff;
         [PreviewField(50, ObjectFieldAlignment.Center)]
-        public Sprite spriteStateOpen;
+        public Sprite spriteStateOn;
     }
 }

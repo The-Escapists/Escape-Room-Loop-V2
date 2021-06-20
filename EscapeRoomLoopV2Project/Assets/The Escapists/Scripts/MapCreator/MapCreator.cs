@@ -1,7 +1,10 @@
+#if UNITY_EDITOR
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,6 +15,8 @@ public class MapCreator : MonoBehaviour
 
     public static MapCreator instance;
 
+    [SerializeField]
+    TMP_InputField mapNameInputField;
     public GameObject tilePrefab;
     public GameObject selectableTilePrefab;
     public LayerMask layerMask;
@@ -44,6 +49,7 @@ public class MapCreator : MonoBehaviour
 
     public GameObject[] SelectionModeSettings;
     public GameObject[] PaintModeSettings;
+    public GameObject[] LoadMapSettings;
 
     public Vector3Int selectedTilePosition;
     public TMP_InputField tileNameField;
@@ -52,6 +58,9 @@ public class MapCreator : MonoBehaviour
     public Vector3Int firstFillPosition;
     public bool firstPositionSet;
     public GameObject cancelFillSetting;
+
+    public List<MapDescription> availableMaps;
+    public TMP_Dropdown loadMapDropdown;
 
     private void Awake()
     {
@@ -79,17 +88,28 @@ public class MapCreator : MonoBehaviour
         }
         rotationDropdown.RefreshShownValue();
 
-        if (currentMapData == null)
-        {
-            currentMapData = ScriptableObject.CreateInstance<MapData>();
-            currentMapData.Init(new Vector2Int(1, 1));
-        }
+        currentMapData = new MapData(new Vector2Int(1, 1));
 
         GenerateMap();
         GeneratePrefabList();
         GenerateLayerList();
 
          cameraController = Camera.main.GetComponent<CameraController>();
+
+        availableMaps = new List<MapDescription>();
+        availableMaps.AddRange(Resources.LoadAll<MapDescription>("Map Descriptions"));
+
+        loadMapDropdown.ClearOptions();
+        if (availableMaps.Count > 0)
+        {
+            List<string> mapNames = new List<string>();
+            foreach (MapDescription mapDescription in availableMaps) mapNames.Add(mapDescription.mapName);
+            loadMapDropdown.AddOptions(mapNames);
+            loadMapDropdown.RefreshShownValue();
+        }
+        HideLoadMapSetting();
+
+        mapNameInputField.SetTextWithoutNotify(currentMapData.mapName);
     }
     public void MoveLayer(int layerIndex, bool direction)
     {
@@ -129,8 +149,69 @@ public class MapCreator : MonoBehaviour
 
     public void NewMapData()
     {
-        currentMapData = ScriptableObject.CreateInstance<MapData>();
-        currentMapData.Init(currentMapData.mapSize);
+        currentMapData = new MapData(new Vector2Int(1, 1));
+
+        GenerateMap();
+        GeneratePrefabList();
+        GenerateLayerList();
+        HideLoadMapSetting();
+
+        mapNameInputField.SetTextWithoutNotify(currentMapData.mapName);
+    }
+
+    public void SaveMap()
+    {
+        if (!Directory.Exists(Application.dataPath + "/The Escapists/Resources/Map Descriptions/"))
+            Directory.CreateDirectory(Application.dataPath + "/The Escapists/Resources/Map Descriptions/");
+
+        Debug.Log(Application.dataPath + "/The Escapists/Resources/Map Descriptions/");
+
+        MapDescription mapDescription = null;
+        string[] assets = AssetDatabase.FindAssets("t:MapDatamapDescription",new [] { "Assets/The Escapists/Resources/Map Descriptions" });
+        foreach(string guid in assets)
+        {
+            MapDescription description = AssetDatabase.LoadAssetAtPath<MapDescription>(AssetDatabase.GUIDToAssetPath(guid));
+            if (mapDescription.mapName == currentMapData.mapName)
+            {
+                mapDescription = description;
+                break;
+            }
+        }
+
+        if (!mapDescription)
+        {
+            mapDescription = ScriptableObject.CreateInstance<MapDescription>();
+            AssetDatabase.CreateAsset(mapDescription, "Assets/The Escapists/Resources/Map Descriptions/" + mapDescription.mapName + ".asset");
+            AssetDatabase.SaveAssets();
+        }
+
+        mapDescription.Init(currentMapData);
+        mapDescription.CreateInteractionGraph();
+
+        availableMaps.Clear();
+        availableMaps.AddRange(Resources.LoadAll<MapDescription>("Map Descriptions"));
+
+        loadMapDropdown.ClearOptions();
+        if (availableMaps.Count > 0)
+        {
+            List<string> mapNames = new List<string>();
+            foreach (MapDescription description in availableMaps) mapNames.Add(description.mapName);
+            loadMapDropdown.AddOptions(mapNames);
+            loadMapDropdown.RefreshShownValue();
+        }
+        HideLoadMapSetting();
+    }
+
+    public void LoadMap(int index)
+    {
+        currentMapData = new MapData(availableMaps[loadMapDropdown.value]);
+
+        GenerateMap();
+        GeneratePrefabList();
+        GenerateLayerList();
+        HideLoadMapSetting();
+
+        mapNameInputField.SetTextWithoutNotify(currentMapData.mapName);
     }
 
     public void SetMapName(string name)
@@ -178,6 +259,59 @@ public class MapCreator : MonoBehaviour
         else
         {
             Debug.LogError("Error: non valid ToolType - " + type);
+        }
+    }
+
+    public void ShowLoadMapSetting()
+    {
+        foreach (GameObject go in SelectionModeSettings)
+        {
+            go.SetActive(false);
+        }
+        foreach (GameObject go in PaintModeSettings)
+        {
+            go.SetActive(false);
+        }
+        foreach (GameObject go in LoadMapSettings)
+        {
+            go.SetActive(true);
+        }
+    }
+
+    public void HideLoadMapSetting()
+    {
+        foreach (GameObject go in LoadMapSettings)
+        {
+            go.SetActive(false);
+        }
+
+        if (currentTool == ToolType.FillPaint || currentTool == ToolType.SinglePaint || currentTool == ToolType.WallPaint)
+        {
+            if (firstPositionSet) ResetFill();
+
+            foreach (GameObject go in SelectionModeSettings)
+            {
+                go.SetActive(false);
+            }
+            foreach (GameObject go in PaintModeSettings)
+            {
+                go.SetActive(true);
+            }
+        }
+        else if (currentTool == ToolType.Select)
+        {
+            foreach (GameObject go in PaintModeSettings)
+            {
+                go.SetActive(false);
+            }
+            foreach (GameObject go in SelectionModeSettings)
+            {
+                go.SetActive(true);
+            }
+        }
+        else
+        {
+            Debug.LogError("Error: non valid ToolType - " + currentTool);
         }
     }
 
@@ -230,12 +364,12 @@ public class MapCreator : MonoBehaviour
                         Vector3Int pos = tile.position;
                         if (availablePrefabs.ContainsKey(brushPrefabName))
                         {
-                            currentMapData.mapLayers[pos.z].layerTiles[pos.x, pos.y].Paint(availablePrefabs[brushPrefabName].prefabName + "l" + pos.z + "x" + pos.x + "y" + pos.y, avalableBrushRotations[rotationDropdown.value], brushPrefabName);
+                            currentMapData.mapLayers[pos.z].layerTiles[pos.x, pos.y].Paint(availablePrefabs[brushPrefabName].prefabName + "l" + pos.z + "x" + pos.x + "y" + pos.y, avalableBrushRotations[rotationDropdown.value], brushPrefabName, availablePrefabs[brushPrefabName].interactionSystemDescription, availablePrefabs[brushPrefabName].notificationType);
                             RenderMap();
                         }
                         else if(brushPrefabName == "")
                         {
-                            currentMapData.mapLayers[pos.z].layerTiles[pos.x, pos.y].Paint("EmptyTile" + "l" + pos.z + "x" + pos.x + "y" + pos.y, 0, "");
+                            currentMapData.mapLayers[pos.z].layerTiles[pos.x, pos.y].Paint("EmptyTile" + "l" + pos.z + "x" + pos.x + "y" + pos.y, 0, "", InteractionSystemDescription.None, TheEscapists.ActionsAndInteractions.NotifyType.None);
                             RenderMap();
                         }
                         else
@@ -282,11 +416,11 @@ public class MapCreator : MonoBehaviour
                                 {
                                     if (availablePrefabs.ContainsKey(brushPrefabName))
                                     {
-                                        currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint(availablePrefabs[brushPrefabName].prefabName + "l" + tile.position.z + "x" +x + "y" + y, avalableBrushRotations[rotationDropdown.value], brushPrefabName);
+                                        currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint(availablePrefabs[brushPrefabName].prefabName + "l" + tile.position.z + "x" +x + "y" + y, avalableBrushRotations[rotationDropdown.value], brushPrefabName, availablePrefabs[brushPrefabName].interactionSystemDescription, availablePrefabs[brushPrefabName].notificationType);
                                     }
                                     else if (brushPrefabName == "")
                                     {
-                                        currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint("EmptyTile" + "l" + tile.position.z + "x" + x + "y" + y, 0, "");
+                                        currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint("EmptyTile" + "l" + tile.position.z + "x" + x + "y" + y, 0, "", InteractionSystemDescription.None, TheEscapists.ActionsAndInteractions.NotifyType.None);
                                     }
                                     else
                                         Debug.LogError("Error: non valid Prefab - " + brushPrefabName);
@@ -350,11 +484,11 @@ public class MapCreator : MonoBehaviour
                                     {
                                         if (availablePrefabs.ContainsKey(brushPrefabName))
                                         {
-                                            currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint(availablePrefabs[brushPrefabName].prefabName + "l" + tile.position.z + "x" + x + "y" + y, avalableBrushRotations[rotationDropdown.value], brushPrefabName);
+                                            currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint(availablePrefabs[brushPrefabName].prefabName + "l" + tile.position.z + "x" + x + "y" + y, avalableBrushRotations[rotationDropdown.value], brushPrefabName, availablePrefabs[brushPrefabName].interactionSystemDescription, availablePrefabs[brushPrefabName].notificationType);
                                         }
                                         else if (brushPrefabName == "")
                                         {
-                                            currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint("EmptyTile" + "l" + tile.position.z + "x" + x + "y" + y, 0, "");
+                                            currentMapData.mapLayers[tile.position.z].layerTiles[x, y].Paint("EmptyTile" + "l" + tile.position.z + "x" + x + "y" + y, 0, "", InteractionSystemDescription.None, TheEscapists.ActionsAndInteractions.NotifyType.None);
                                         }
                                         else
                                             Debug.LogError("Error: non valid Prefab - " + brushPrefabName);
@@ -404,7 +538,7 @@ public class MapCreator : MonoBehaviour
         }
     }
 
-    bool IsMouseOverUI()
+    public bool IsMouseOverUI()
     {
         return EventSystem.current.IsPointerOverGameObject();
     }
@@ -498,3 +632,4 @@ public class MapCreator : MonoBehaviour
         }
     }
 }
+#endif

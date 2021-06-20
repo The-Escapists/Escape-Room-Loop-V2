@@ -1,4 +1,5 @@
-using TheEscapists.ActionsAndInteractions.Interaction;
+
+using TheEscapists.ActionsAndInteractions.Interactions;
 using TheEscapists.Core.Animation;
 using TheEscapists.Core.Audio;
 using UnityEngine;
@@ -8,7 +9,7 @@ namespace TheEscapists.Entities
     public class EntityBase : MonoBehaviour
     {
         [HideInInspector]
-        public Interaction interactionContext;
+        public InteractionInput interactionContext;
         [HideInInspector]
         public bool isMovingObject;
 

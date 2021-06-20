@@ -1,8 +1,7 @@
+#if UNITY_EDITOR
 using Sirenix.OdinInspector;
 using Sirenix.OdinInspector.Editor;
 using Sirenix.Utilities.Editor;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -68,6 +67,8 @@ public class CreateNewPrefabDescription
     {
         prefabDescription = ScriptableObject.CreateInstance<PrefabDescription>();
         prefabDescription.prefabName = "new Prefab Description";
+        prefabDescription.prefabChecker = ScriptableObject.CreateInstance<PrefabChecker>();
+        prefabDescription.prefabChecker.Init(prefabDescription);
     }
 
     [InlineEditor(ObjectFieldMode = InlineEditorObjectFieldModes.Hidden)]
@@ -77,6 +78,7 @@ public class CreateNewPrefabDescription
     private void CreateNewDesription()
     {
         AssetDatabase.CreateAsset(prefabDescription, "Assets/The Escapists/Resources/Prefab Descriptions/" + prefabDescription.prefabName + ".asset");
+        if(prefabDescription.prefabChecker) AssetDatabase.AddObjectToAsset(prefabDescription.prefabChecker, "Assets/The Escapists/Resources/Prefab Descriptions/" + prefabDescription.prefabName + ".asset");
         AssetDatabase.SaveAssets();
         
         prefabDescription = ScriptableObject.CreateInstance<PrefabDescription>();
@@ -84,3 +86,4 @@ public class CreateNewPrefabDescription
 
     }
 }
+#endif

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TheEscapists.ActionsAndInteractions.Interactions;
 using TheEscapists.Entities.Manager;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,7 +47,7 @@ namespace TheEscapists.Entities
             if (Interactions[CurrentInteractionIndex])
             {
                 if (interactionContext)
-                    interactionContext.Execute(transform, this);
+                    interactionContext.Execute();
             }
             CurrentInteractionIndex++;
         }

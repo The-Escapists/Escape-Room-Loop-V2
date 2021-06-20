@@ -11,25 +11,24 @@ namespace TheEscapists.ActionsAndInteractions.Actions
         AudioSource source;
         AudioClip audioClip;
 
-        public bool condition;
-
         private void Start()
         {
             audioClip = GetComponent<AudioClip>();
             source = GetComponent<AudioSource>();
         }
 
-        public override void CheckConditions()
+        public override void TriggerEnable()
         {
-            //condition = ActionAndInteractionManager.instance.GetActorState(actionIndex);
-
-            if(condition)
-            {
                 if(source.clip != audioClip)
                     source.clip = audioClip;
                 if(!source.isPlaying)
                     source.Play();
-            }
+        }
+
+        public override void TriggerDisable()
+        {
+            if (source.isPlaying)
+                source.Stop();
         }
     }
 }

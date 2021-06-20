@@ -10,16 +10,14 @@ namespace TheEscapists.ActionsAndInteractions.Actions
         public float onValue;
         public float offValue;
 
-        [PropertySpace(20)]
-
-        public bool condition;
-
-        public override void CheckConditions()
+        public override void TriggerDisable()
         {
+            light2D.intensity = offValue;
+        }
 
-            //condition = ActionAndInteractionManager.instance.GetActorState(actionIndex);
-
-            light2D.intensity = condition ? onValue : offValue;
+        public override void TriggerEnable()
+        {
+            light2D.intensity = onValue;
         }
     }
 }

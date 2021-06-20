@@ -3,41 +3,28 @@ using UnityEngine;
 
 namespace TheEscapists.Core
 {
-
     [Serializable]
-    public class BaseTile
+    public class Actor
     {
         public string name;
-        public int id;
-        public Vector2Int position;
+        public bool isInteractive;
 
-        public BaseTile(string _name, Vector2Int _position, int _id)
+        public Actor(string name, bool isInteractive)
         {
-            name = _name;
-            position = _position;
-            id = _id;
+            this.name = name;
+            this.isInteractive = isInteractive;
         }
     }
-
     [Serializable]
-    public class ActorTile : BaseTile
+    public class Interactor
     {
-        public bool state;
+        public string name;
+        public bool isInteractive;
 
-        public ActorTile(string _name, Vector2Int _position, int _id, bool _state) : base(_name, _position, _id)
+        public Interactor(string name, bool isInteractive)
         {
-            state = _state;
-        }
-    }
-
-    [Serializable]
-    public class InteractorTile : BaseTile
-    {
-        public bool state;
-
-        public InteractorTile(string _name, Vector2Int _position, int _id, bool _state) : base(_name, _position, _id)
-        {
-            state = _state;
+            this.name = name;
+            this.isInteractive = isInteractive;
         }
     }
 }

@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TheEscapists.ActionsAndInteractions;
 using UnityEngine;
 
 [System.Serializable]
@@ -10,24 +11,27 @@ public class MapTileData
     public string tileName;
     public int tileRotation;
     public string brushPrefabName;
-
-    public MapTileData(string tileName, int tileRotation, string brushPrefabName)
+    public InteractionSystemDescription interactionSystemDescription;
+    public NotifyType notifyType;
+    public MapTileData(string tileName, int tileRotation, string brushPrefabName, InteractionSystemDescription interactionSystemDescription, NotifyType notifyType)
     {
         this.tileName = tileName;
         this.tileRotation = tileRotation;
         this.brushPrefabName = brushPrefabName;
+        this.interactionSystemDescription = interactionSystemDescription;
     }
 
-    public void Paint(string tileName, int tileRotation, string brushPrefabName)
+    public void Paint(string tileName, int tileRotation, string brushPrefabName, InteractionSystemDescription interactionSystemDescription, NotifyType notifyType)
     {
         this.tileName = tileName;
         this.tileRotation = tileRotation;
         this.brushPrefabName = brushPrefabName;
+        this.interactionSystemDescription = interactionSystemDescription;
     }
 
     public void Remove()
     {
-        Paint("EmptyTile", 0, "");
+        Paint("EmptyTile", 0, "", InteractionSystemDescription.None, NotifyType.None);
     }
 }
 
@@ -53,13 +57,13 @@ public class MapLayerData
     }
 }
 
-public class MapData : ScriptableObject
+public class MapData
 {
     public List<MapLayerData> mapLayers;
     public string mapName;
     public Vector2Int mapSize;
 
-    public void Init(Vector2Int mapSize)
+    public MapData(Vector2Int mapSize)
     {
 
         this.mapSize = mapSize;
@@ -70,8 +74,29 @@ public class MapData : ScriptableObject
         {
             for (int y = 0; y < mapSize.y; y++)
             {
-                mapLayers[0].layerTiles[x, y] = new MapTileData("EmptyTile" + "l" + (mapLayers.Count-1) + "x" + x + "y" + y, 0, "");
+                mapLayers[0].layerTiles[x, y] = new MapTileData("EmptyTile" + "l" + (mapLayers.Count-1) + "x" + x + "y" + y, 0, "", InteractionSystemDescription.None, NotifyType.None);
             }
+        }
+    }
+
+    public MapData(MapDescription mapDescription)
+    {
+        mapSize = mapDescription.mapSize;
+        mapName = mapDescription.mapName;
+        mapLayers = new List<MapLayerData>();
+
+        for (int z = 0; z < mapDescription.layerCount; z++)
+        {
+            MapTileData[,] data = new MapTileData[mapSize.x, mapSize.y];
+            for (int x = 0; x < mapSize.x; x++)
+            {
+                for (int y = 0; y < mapSize.y; y++)
+                {
+                    data[x, y] = new MapTileData(mapDescription.tileName[x * mapSize.y + y * mapDescription.layerCount + z], mapDescription.tileRotation[x * mapSize.y + y * mapDescription.layerCount + z], mapDescription.brushPrefabName[x * mapSize.y + y * mapDescription.layerCount + z], mapDescription.interactionSystemDescriptions[x * mapSize.y + y * mapDescription.layerCount + z],  mapDescription.notifyTypes[x * mapSize.y + y * mapDescription.layerCount + z]);
+                }
+            }
+
+            mapLayers.Add(new MapLayerData(mapDescription.layerIndex[z], mapDescription.layerName[z], mapDescription.isHidden[z], data));
         }
     }
 
@@ -82,7 +107,7 @@ public class MapData : ScriptableObject
         {
             for (int y = 0; y < mapSize.y; y++)
             {
-                mapLayers[mapLayers.Count - 1].layerTiles[x, y] = new MapTileData("EmptyTile" + "l" + (mapLayers.Count - 1) + "x" + x + "y" + y, 0, "");
+                mapLayers[mapLayers.Count - 1].layerTiles[x, y] = new MapTileData("EmptyTile" + "l" + (mapLayers.Count - 1) + "x" + x + "y" + y, 0, "", InteractionSystemDescription.None, NotifyType.None);
             }
         }
 
@@ -102,7 +127,7 @@ public class MapData : ScriptableObject
                     if (this.mapSize.x > x && this.mapSize.y > y)
                         data[x, y] = mapLayers[z].layerTiles[x, y];
                     else
-                        data[x, y] = new MapTileData("EmptyTile" + "l" + z + "x"+ x + "y" + y, 0, "");
+                        data[x, y] = new MapTileData("EmptyTile" + "l" + z + "x"+ x + "y" + y, 0, "", InteractionSystemDescription.None, NotifyType.None);
                 }
             }
             mapLayers[z].SetTileData(data);

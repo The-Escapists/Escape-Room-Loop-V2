@@ -9,14 +9,15 @@ namespace TheEscapists.ActionsAndInteractions.Actions
         [SerializeField]
         Collider2D Collider;
 
-        public bool condition;
-
-        public override void CheckConditions()
+        public override void TriggerEnable()
         {
 
-            //condition = ActionAndInteractionManager.instance.GetActorState(actionIndex);
+            Collider.enabled = true;
+        }
+        public override void TriggerDisable()
+        {
 
-            Collider.enabled = condition;
+            Collider.enabled = false;
         }
     }
 }
