@@ -165,8 +165,6 @@ public class MapCreator : MonoBehaviour
         if (!Directory.Exists(Application.dataPath + "/The Escapists/Resources/Map Descriptions/"))
             Directory.CreateDirectory(Application.dataPath + "/The Escapists/Resources/Map Descriptions/");
 
-       // Debug.Log(Application.dataPath + "/The Escapists/Resources/Map Descriptions/");
-
         MapDescription mapDescription = null;
         string[] assets = AssetDatabase.FindAssets("t:MapDatamapDescription",new [] { "Assets/The Escapists/Resources/Map Descriptions" });
         foreach(string guid in assets)

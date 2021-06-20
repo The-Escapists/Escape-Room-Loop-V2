@@ -122,8 +122,8 @@ public class MapInteractionNodeGraph : NodeGraph
             }
             if (skip)
                 continue;
-
-            if ((InteractionSystemDescription)mapDescription.interactionSystemDescriptions[i] == InteractionSystemDescription.Interactor)
+            InteractionSystemDescription interactionSystemDescription = (InteractionSystemDescription)mapDescription.interactionSystemDescriptions[i];
+            if (interactionSystemDescription == InteractionSystemDescription.Interactor)
             {
                 InputNode inputNode = window.graphEditor.CreateNode(typeof(InputNode), new Vector2(-400, 0 + 40 * createdInputNodes)) as InputNode;
                 inputNode.allowedNotifyType = (NotifyType)mapDescription.notifyTypes[i];
@@ -131,7 +131,7 @@ public class MapInteractionNodeGraph : NodeGraph
                 createdInputNodes++;
             }
 
-            if ((InteractionSystemDescription)mapDescription.interactionSystemDescriptions[i] == InteractionSystemDescription.Actor)
+            if (interactionSystemDescription == InteractionSystemDescription.Actor || interactionSystemDescription == InteractionSystemDescription.Interactor)
             {
                 OutputNode outputNode = window.graphEditor.CreateNode(typeof(OutputNode), new Vector2(400, 0 + 40 * createdOutputNodes)) as OutputNode;
                 outputNode.name = mapDescription.tileName[i];
