@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 
 public class MapCreator : MonoBehaviour
 {
-    [InlineEditor, SerializeField]
+    [InlineEditor]
     public MapData currentMapData;
 
     public static MapCreator instance;
@@ -164,7 +164,7 @@ public class MapCreator : MonoBehaviour
         if (!Directory.Exists(Application.dataPath + "/The Escapists/Resources/Map Descriptions/"))
             Directory.CreateDirectory(Application.dataPath + "/The Escapists/Resources/Map Descriptions/");
 
-        Debug.Log(Application.dataPath + "/The Escapists/Resources/Map Descriptions/");
+       // Debug.Log(Application.dataPath + "/The Escapists/Resources/Map Descriptions/");
 
         MapDescription mapDescription = null;
         string[] assets = AssetDatabase.FindAssets("t:MapDatamapDescription",new [] { "Assets/The Escapists/Resources/Map Descriptions" });
@@ -181,7 +181,7 @@ public class MapCreator : MonoBehaviour
         if (!mapDescription)
         {
             mapDescription = ScriptableObject.CreateInstance<MapDescription>();
-            AssetDatabase.CreateAsset(mapDescription, "Assets/The Escapists/Resources/Map Descriptions/" + mapDescription.mapName + ".asset");
+            AssetDatabase.CreateAsset(mapDescription, "Assets/The Escapists/Resources/Map Descriptions/" + currentMapData.mapName + ".asset");
             AssetDatabase.SaveAssets();
         }
 
@@ -325,7 +325,6 @@ public class MapCreator : MonoBehaviour
 
     public void SelectTile(Vector3Int position)
     {
-        Debug.Log(position);
         tileNameField.SetTextWithoutNotify(currentMapData.mapLayers[position.z].layerTiles[position.x, position.y].tileName);
         selectedTilePosition = position;
     }
